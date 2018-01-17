@@ -36,6 +36,7 @@ gem 'jbuilder', '~> 2.5'
 # By Nacho 15/01/2018
 group :test do
   gem 'rspec-rails', '~> 3.7.2'
+  gem 'capybara'
 end
 
 
