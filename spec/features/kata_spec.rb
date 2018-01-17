@@ -7,8 +7,11 @@ describe 'Kata' do
     kata_description = 'You can do it'
     kata = Kata.new(title: kata_title,
                     description:kata_description)
+    kata.save
+
     visit root_path
     click_on(kata_title)
+    
     expect(page).to have_content(kata_title)
     expect(page).to have_content(kata_description)
   end
