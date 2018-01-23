@@ -13,6 +13,20 @@ describe 'Kata' do
     expect(page).to have_content(kata_title)
     expect(page).to have_content(kata_description)
   end
+
+  it "create new katas" do
+    kata_title = 'Kill nazis'
+    kata_description = 'You can do it'
+
+    visit root_path
+    click_on('New kata')
+    fill_in(:title, with: kata_title)
+    fill_in(:description, with: kata_description)
+    click_on('Save')
+    
+    expect(page).to have_content(kata_title)
+    expect(page).to have_content(kata_description)
+  end
 end
 
 def create_kata(title: 'kata title', description: 'kata description')
