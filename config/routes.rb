@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
-            #controller#page
+            #controller#method
   root to: 'katas#index'
-
+                                       #kata_path
   get 'kata/:id' => 'katas#show', as: :kata
 end
