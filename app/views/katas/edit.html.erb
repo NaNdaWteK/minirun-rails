@@ -1,6 +1,3 @@
 <h1>Edit katas</h1>
-<%= form_for(@kata) do |field| %>
-<p><%= field.text_field :title %></p>
-<p><%= field.text_field :description %></p>
-<p><%= field.submit 'Save' %></p>
-<% end %>
+
+<%= render 'form', note: @kata %>
