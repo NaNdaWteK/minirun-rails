@@ -23,8 +23,8 @@ describe 'Kata' do
     visit root_path
     click_on('New kata')
 
-    fill_in(:title, with: TITLE)
-    fill_in(:description, with: DESCRIPTION)
+    fill_in(:kata_title, with: TITLE)
+    fill_in(:kata_description, with: DESCRIPTION)
     click_on('Save')
 
     expect(page).to have_content(TITLE)
@@ -49,7 +49,7 @@ describe 'Kata' do
     kata = create_kata
     visit root_path
     expect(page).to have_content(DEFAULT_TITLE)
-    
+
     click_on('Delete')
     visit root_path
 

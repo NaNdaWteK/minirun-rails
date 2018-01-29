@@ -1,15 +1,17 @@
 class KatasController < ApplicationController
+
+  before_action :set_kata, only: [:edit, :update, :destroy, :show ]
+
   def index
     @katas = Kata.all
   end
 
   def edit
-    @kata = Kata.find(params[:id])
+    render :edit
   end
 
   def update
-    @kata = Kata.find(params[:id])
-    if @kata.update_attributes(kata_params)
+    if @kata.update(kata_params)
       flash[:notice] = 'Kata updated!'
       redirect_to root_path
     else
@@ -19,29 +21,36 @@ class KatasController < ApplicationController
   end
 
   def destroy
-    @kata = Kata.find(params[:id])
     @kata.destroy
     redirect_to root_path
   end
 
   def show
-    @kata = Kata.find(params[:id])
+    render :show
   end
 
   def new
-    render :new
+    @kata = Kata.new
   end
 
   def create
-    kata = Kata.new(title: params[:title], description: params[:description])
-    if kata.save
-      redirect_to kata_path(kata.id)
+    @kata = Kata.new(kata_params)
+    if @kata.save
+      flash[:notice] = 'Kata created!'
+      redirect_to kata_path(@kata.id)
     else
+      flash[:error] = 'Failed to create kata!'
       render :new
     end
   end
 
+  private
+
   def kata_params
     params.require(:kata).permit(:title, :description) #.permit(:name, :price, :old_price, :short_description, :full_description)
+  end
+
+  def set_kata
+    @kata = Kata.find(params[:id])
   end
 end
