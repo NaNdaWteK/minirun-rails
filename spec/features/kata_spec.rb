@@ -8,57 +8,79 @@ describe 'Kata' do
   UPDATED_DESCRIPTION = 'You can do it Harry'
   DEFAULT_TITLE = 'kata title'
 
-  it "second kata is readed" do
-    create_kata
-    create_kata(title: TITLE, description: DESCRIPTION)
-    visit root_path
+  context 'User logged' do
+    before(:each) do
+      login
+    end
 
-    click_on(TITLE)
+    it "create new katas" do
+      visit root_path
+      click_on('New kata')
+      fill_in(:kata_title, with: TITLE)
+      fill_in(:kata_description, with: DESCRIPTION)
+      click_on('Save')
 
-    expect(page).to have_content(TITLE)
-    expect(page).to have_content(DESCRIPTION)
+      expect(page).to have_content(TITLE)
+      expect(page).to have_content(DESCRIPTION)
+    end
+
+    it "update katas" do
+      kata = create_kata
+      visit root_path
+
+      click_on('Edit')
+      fill_in(:kata_title, with: UPDATED_TITLE)
+      fill_in(:kata_description, with: UPDATED_DESCRIPTION)
+      click_on('Save')
+
+      expect(page).to have_content(UPDATED_TITLE)
+      expect(page).not_to have_content(DEFAULT_TITLE)
+    end
+    it "delete katas" do
+      kata = create_kata
+      visit root_path
+      expect(page).to have_content(DEFAULT_TITLE)
+
+      click_on('Delete')
+      visit root_path
+
+      expect(page).not_to have_content(kata.title)
+    end
   end
 
-  it "create new katas" do
-    visit root_path
-    click_on('New kata')
+  context 'All users' do
+    before(:each) do
+      login
+    end
 
-    fill_in(:kata_title, with: TITLE)
-    fill_in(:kata_description, with: DESCRIPTION)
-    click_on('Save')
+    it "second kata is readed" do
+      create_kata
+      create_kata(title: TITLE, description: DESCRIPTION)
+      visit root_path
 
-    expect(page).to have_content(TITLE)
-    expect(page).to have_content(DESCRIPTION)
+      click_on(TITLE)
+
+      expect(page).to have_content(TITLE)
+      expect(page).to have_content(DESCRIPTION)
+    end
   end
 
-  it "update katas" do
-    kata = create_kata
-    visit root_path
+  def login
+    user = User.new(
+      email: 'nacho@webimes.es',
+      password: 'aaaaaa'
+    )
+    user.save
 
-    click_on('Edit')
-    fill_in(:kata_title, with: UPDATED_TITLE)
-    fill_in(:kata_description, with: UPDATED_DESCRIPTION)
-    click_on('Save')
-    visit root_path
-
-    expect(page).to have_content(UPDATED_TITLE)
-    expect(page).not_to have_content(DEFAULT_TITLE)
+    visit 'users/sign_in'
+    fill_in(:user_email, with: 'nacho@webimes.es')
+    fill_in(:user_password, with: 'aaaaaa')
+    click_on('Log in')
   end
 
-  it "delete katas" do
-    kata = create_kata
-    visit root_path
-    expect(page).to have_content(DEFAULT_TITLE)
-
-    click_on('Delete')
-    visit root_path
-
-    expect(page).not_to have_content(kata.title)
+  def create_kata(title: DEFAULT_TITLE, description: 'kata description')
+    kata = Kata.new(title: title, description: description)
+    kata.save
+    kata
   end
-end
-
-def create_kata(title: DEFAULT_TITLE, description: 'kata description')
-  kata = Kata.new(title: title, description: description)
-  kata.save
-  kata
 end
