@@ -1,7 +1,12 @@
 <h1>Katas</h1>
+<h4> <%= link_to('Log out', destroy_user_session_path, { method: :delete}) %></h4>
 <p><%= link_to('New kata', new_kata_path) %></p>
 <ul>
 <% @katas.each do |kata| %>
-  <li><%= link_to(kata.title, kata_path(kata.id)) %> <%= link_to('Edit', edit_kata_path(kata.id)) %> <%= link_to('Delete', kata_path(kata.id), { method: :delete, data: { confirm: 'Are you sure?' }}) %></li>
+  <li>
+    <%= link_to(kata.title, kata_path(kata.id)) %>
+    <%= link_to('Edit', edit_kata_path(kata.id)) if user_signed_in? %>
+    <%= destroy_kata_link(kata.id) %>
+  </li>
 <% end %>
 </ul>

@@ -31,5 +31,5 @@
 
 es:
   edit:
-    title: "Editar kata"
+    title: "Editar kata %{name}"
   save: "Guardar"
