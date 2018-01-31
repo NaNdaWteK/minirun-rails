@@ -7,6 +7,7 @@ describe 'Kata' do
   UPDATED_TITLE = 'Kata Harry potter'
   UPDATED_DESCRIPTION = 'You can do it Harry'
   DEFAULT_TITLE = 'kata title'
+  SAVE_BUTTON_TEXT = 'Guardar'
 
   context 'User logged' do
     before(:each) do
@@ -18,7 +19,7 @@ describe 'Kata' do
       click_on('New kata')
       fill_in(:kata_title, with: TITLE)
       fill_in(:kata_description, with: DESCRIPTION)
-      click_on('Save')
+      click_on(SAVE_BUTTON_TEXT)
 
       expect(page).to have_content(TITLE)
       expect(page).to have_content(DESCRIPTION)
@@ -31,7 +32,7 @@ describe 'Kata' do
       click_on('Edit')
       fill_in(:kata_title, with: UPDATED_TITLE)
       fill_in(:kata_description, with: UPDATED_DESCRIPTION)
-      click_on('Save')
+      click_on(SAVE_BUTTON_TEXT)
 
       expect(page).to have_content(UPDATED_TITLE)
       expect(page).not_to have_content(DEFAULT_TITLE)
